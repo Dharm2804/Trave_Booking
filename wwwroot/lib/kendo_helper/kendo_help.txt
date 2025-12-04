@@ -1,0 +1,313 @@
+
+# Grid Example
+
+<div id="grid"></div>
+
+<script>
+$("#grid").kendoGrid({
+    dataSource: {
+        data: data,
+        schema:{
+            model:{
+               id: "id",
+                fields: {
+                    id: { type: "number" },
+                    name: { type: "string" },
+                    qty: { type: "number" },
+                    cost: { type: "number" },
+                    total_cost: { type: "number" },
+                    image: { type: "string" }
+                    hiredate: { type: "date" },
+                }
+            }
+        },
+        pageSize: 5
+    },
+    height: 400,
+    pageable: true,
+    filterable: true,
+    columnMenu: true,
+    sortable: true,
+    columns: [
+        { field: "id", title: "Id", width: 50 },
+        { field: "name", title: "Name", width: 100 },
+        { field: "cost", title: "Cost", width: 50 },
+        { field: "qty", title: "Qty", width: 50 },
+        { field: "total_cost", title: "Total Cost", width: 50 },
+        { field: "hiredate", title: "Hire Date", format: "{0:dd/MM/yyyy}", width: 100 },
+        { field: "image", title: "Image", width: 100, template: "<img width='100' height='100' src='/items_img/#:image#' />" },
+        { title: "Action", width: 60, template: "<button class='btn btn-danger' onclick='Delete(#:id#)'>Delete</button>" },
+    ]
+});
+
+
+# Form Example
+
+$("#productForm").kendoForm({
+    validatable: {
+            validateOnBlur: true,
+            errorTemplate: "<span class='text-danger'>#:message#</span>"
+        },
+    items: [
+        {
+                field: "name",
+                label: "Product Name",
+                editor: function (container, options) {
+                    $(`<input type='text' name='${options.field}' class='form-control mt-2' required/>`)
+                        .appendTo(container);
+                },
+                validation: {
+                    required: { message: "Name is required" }
+                }
+            },
+    ],
+    buttonsTemplate: `
+            <div class="mt-3">
+                <button type="submit" class="k-button k-primary">Save</button>
+            </div>
+        `,
+    submit: function (e) {
+            e.preventDefault();
+        }
+})
+
+
+# DropDown Example
+
+{
+    field: "category",
+    label: "Category",
+    editor: "DropDownList", or "MultiSelect"
+    editorOptions: {
+        dataSource: ["Stationary", "Mobile", "Electronics", "Furniture"],
+        optionLabel: "Select category"
+    },
+    validation: {
+        required: { message: "Category is required" }
+    }
+},
+
+{
+    field: "category",
+    label: "Category",
+    editor: "DropDownList", or "MultiSelect"
+    editorOptions: {
+        dataTextField: "name",     // what user sees
+        dataValueField: "id",       // what is saved
+        optionLabel: "Select category",
+        dataSource: {
+            transport: {
+                read: {
+                    url: "/Home/GetCategories",   // API
+                    dataType: "json"
+                }
+            }
+        }
+    },
+}
+
+
+# NumericTextBox Example
+
+{
+    field: "total",
+    label: "Total Amount",
+    editor: function (container, options) {
+        $(`<input id="TotalBox" name='${options.field}' />`)
+            .appendTo(container)
+            .kendoNumericTextBox({
+                min: 0,
+                max:100,
+                format: "c2",
+                spinners: false,
+                enable: false // read-only
+                change:function () {
+                    const qty = this.value() ;
+                }
+            });
+    }
+},
+
+
+
+# MultiSelect Example
+
+{
+    field: "tags",
+    label: "Tags",
+    editor: function (container, options) {
+        $(`<input name='${options.field}' />`)
+            .appendTo(container)
+            .kendoMultiSelect({
+                dataSource: ["New", "Popular", "Discounted", "Limited Edition"],
+                placeholder: "Select tags..."
+            });
+    }
+},
+
+
+# Image Upload
+
+{
+    field: "imageFileName",
+    label: "Product Image",
+    editor: function (container, options) {
+        const upload = $(`<input name='${options.field}' type='file' />`)
+            .appendTo(container)
+            .kendoUpload({
+                multiple: false,
+            })
+    }
+}
+
+
+# Date Picker
+
+{
+    field: "launchDate",
+    label: "Launch Date",
+    editor: "DatePicker",
+    editorOptions: {
+
+         // FORMAT
+        format: "yyyy-MM-dd",       // Display format
+
+
+        // DEFAULT VALUE
+        value: new Date(),          // Default today
+
+        // MIN & MAX
+        min: new Date(2020, 0, 1),  // 1 Jan 2020
+        max: new Date(2030, 11, 31),// 31 Dec 2030
+
+              // UI SETTINGS
+        weekNumber: true,           // Show week number
+        start: "month",              // start = month | year | decade | century
+        depth: "month",              // lowest selectable level
+
+         change: function () {
+            console.log("Selected date:", this.value());
+        },
+    }
+}
+
+
+# Radio Example
+
+{
+    field: "gender",
+    label: "Gender",
+    editor: function (container, options) {
+
+    $(`<div id='radioGrp'></div>
+        <input type="hidden" id="${options.field}" name="${options.field}" 
+    required data-required-msg ="${options.label} is required."/>`)
+        .appendTo(container);
+
+        $("#radioGrp").kendoRadioGroup({
+            items: [
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+                { label: "Other", value: "Other" },
+            ],
+            layout: "horizontal",
+            change: function () {
+                var gender = this.value();
+                $("#gender").val(gender);
+                options.model.set("gender", gender);
+            }
+        })
+    }
+},
+
+
+
+# Notification Example
+
+$("#notification").kendoNotification({
+            autoHiseAfter: 1000,
+            position: {
+                top: 30
+            },
+            width: 400
+})
+
+
+# Modal Example
+
+$("#itemsModel").kendoWindow({
+            title: "Items",
+            visible: false,
+            modal: true,
+            width: 600
+})
+
+
+
+#Swal filter
+
+Swal.fire({
+    icon: 'success',
+    title: 'Welcome!',
+    text: response.message,
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+}).then(function(){
+
+})
+
+
+Swal.fire({
+    title: "Are you sure?",
+    text: "This action cannot be undone!",
+    icon: "warning",
+    showConfirmButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+    cancelButtonText: "Cancel"
+}).then((result) => {
+    if (result.isConfirmed) {
+    }
+});
+
+
+// kendo Validator
+
+
+$("#registerForm").kendoValidator({
+    rules: {
+        name: function (input) {
+            if (input.is("[name='name']")) {
+                return /^[a-zA-Z ]+$/.test(input.val());
+            }
+            return true;
+        },
+        password: function (input) {
+            if (input.is("[name='password']")) {
+                return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/.test(input.val())
+            }
+            return true;
+        },
+        cnfpassword: function (input) {
+            if (input.is("[name='cnfpassword']")) {
+                return input.val() == $("[name='password']").val();
+            }
+            return true;
+        },
+        mobile: function (input) {
+            if (input.is("[name='mobile']")) {
+                return /^[0-9]{10}$/.test(input.val());
+            }
+            return true;
+        }
+
+    },
+    messages: {
+        name: "Only Alphabets are allowed",
+        password: "Password must contain at least 8 characters, at least one uppercase letter,at least one lowercase letter and at least one number",
+        cnfpassword: "Password does not match",
+        mobile: "Mobile number is not valid"
+    }
+});
+

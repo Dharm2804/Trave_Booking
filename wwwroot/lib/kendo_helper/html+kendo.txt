@@ -1,0 +1,190 @@
+@section Scripts {
+    <script>
+        $("#c_date").kendoDatePicker({
+            value: new Date(),               // Default selected date
+            min: new Date(2020, 0, 1),         // Minimum allowed date
+            max: new Date(2030, 11, 31),       // Maximum allowed date
+            format: "dd-MM-yyyy",            // Display format
+            parseFormats: ["dd-MM-yyyy", "yyyy-MM-dd", "MM/dd/yyyy"], // Acceptable parse formats
+            start: "month",                  // start view: "month","year","decade","century"
+            depth: "month",                  // deepest navigation: "month","year","decade","century"
+            weekNumber: true,                // show week numbers column
+            firstDay: 1,                     // 0=Sun,1=Mon
+            footer: "Today - #=kendo.toString(data,'dd MMM yyyy')#", // footer template
+            disableDates: function (date) {   // disable specific dates/days
+                if (!date) return false;
+                // example: disable Sundays
+                return date.getDay() === 0;
+            },
+            animation: true,                 // popup animation (true/false or object)
+            open: function () { },              // open event
+            close: function () { },             // close event
+            change: function () { },            // change event
+            enable: true,                    // enable/disable widget
+            readOnly: false,                 // make readonly
+            ARIA: true,                      // accessibility messages (object)
+            messages: {                      // custom messages
+                toggle: "Open calendar",
+                today: "Today"
+            }
+        });
+
+
+        // date time pciker
+
+        $("#c_datetime").kendoDateTimePicker({
+            value: new Date(),
+            min: new Date(2020, 0, 1),
+            max: new Date(2030, 11, 31),
+            format: "dd-MM-yyyy HH:mm",
+            dateInput: true,                 // enable date masked input
+            timeFormat: "HH:mm",
+            interval: 30,                    // minute step in time view
+            start: "month",
+            depth: "month",
+            change: function () { },
+            open: function () { },
+            close: function () { }
+        });
+
+        //kendo slider
+        $("#c_age_slider").kendoSlider({
+            min: 0,
+            max: 100,
+            value: 18,                        // initial value
+            smallStep: 1,                     // step per arrow key
+            largeStep: 10,                    // step per click on track
+            tickPlacement: "both",            // "none","top","bottom","both"
+            tooltip: {
+                enabled: true,
+                format: "{0}"                 // tooltip format
+            },
+            orientation: "horizontal",        // or "vertical"
+            reverse: false,                   // reverse direction
+            change: function (e) { },            // change event
+            slide: function (e) { }              // slide event (live)
+        });
+
+        @* Kendo RangeSlider *@
+            $("#c_range").kendoRangeSlider({
+                min: 0,
+                max: 100,
+                smallStep: 1,
+                largeStep: 10,
+                tickPlacement: "both",
+                value: [10, 50],                  // selected range [min,max]
+                change: function (e) { },
+                slide: function (e) { }
+            });
+
+        @* Kendo RadioGroup *@
+            $("#c_gender").kendoRadioGroup({
+                items: [
+                    { value: "male", label: "Male", attr: { id: "r_male" } },
+                    { value: "female", label: "Female", attr: { id: "r_female" } }
+                ],
+                layout: "horizontal",             // or "vertical"
+                value: "male",                    // initial value
+                enable: true,
+                change: function (e) {
+                    console.log("selected:", this.value());
+                }
+            });
+
+        @* Kendo MultiSelect *@
+            $("#c_hobby_widget").kendoMultiSelect({
+                dataSource: ["Fan", "A/C", "Heater", "TV"],
+                dataTextField: null,              // if objects, use field name
+                dataValueField: null,             // if objects, use field name
+                valuePrimitive: true,             // returns primitives instead of objects
+                placeholder: "Select equipment...",
+                autoClose: false,
+                tagMode: "multiple",              // single/multiple mode
+                maxSelectedItems: 5,
+                value: [],                        // pre-selected values
+                change: function (e) { },
+                select: function (e) { }
+            });
+
+        @* Kendo DropDownList / ComboBox *@
+            // DropDownList
+            $("#c_city").kendoDropDownList({
+                dataSource: ["Surat", "Vadodara", "Pune"],
+                optionLabel: "--select City--",
+                value: null,
+                index: -1,
+                dataTextField: null,
+                dataValueField: null,
+                autoBind: true,
+                filter: "contains",               // "startswith","contains"
+                template: "#= data #",            // item template
+                change: function (e) { },
+                cascadeFrom: null                 // for cascading
+            });
+
+        // ComboBox (editable)
+        $("#c_state").kendoComboBox({
+            dataSource: ["Gujrat", "Maharashtra"],
+            placeholder: "--select State--",
+            suggest: true,
+            filter: "startswith",
+            autoBind: true,
+            change: function () { }
+        });
+
+        @* Kendo Upload (file) *@
+
+            $("#image").kendoUpload({
+                async: {
+                    saveUrl: "/upload/save",
+                    removeUrl: "/upload/remove",
+                    autoUpload: true
+                },
+                multiple: false,
+                validation: {
+                    allowedExtensions: [".jpg", ".png", ".jpeg"],
+                    maxFileSize: 1048576 // bytes (1 MB)
+                },
+                showFileList: true,
+                localization: {
+                    select: "Choose file..."
+                },
+                success: function (e) { },    // upload success
+                error: function (e) { },      // error callback
+                select: function (e) { }      // when user selects file(s)
+            });
+
+        @* Kendo Validator (client-side validation) *@
+            $("#myForm").kendoValidator({
+                rules: {
+                    customAge: function (input) {
+                        if (input.is("[name='c_age']")) {
+                            var v = parseInt(input.val(), 10);
+                            return v >= 18 && v <= 100;
+                        }
+                        return true;
+                    }
+                },
+                messages: {
+                    customAge: "Age must be between 18 and 100"
+                }
+            });
+
+
+        // checkbox
+        $("#").kendoCheckBox({
+
+            label: "",
+            change: function (e) {
+                $("#").prop("", e.checked); //id
+            }
+
+
+        })
+  
+
+
+
+
+    </script>
+}

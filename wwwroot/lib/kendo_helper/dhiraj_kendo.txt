@@ -1,0 +1,83 @@
+enctype="multipart/form-data
+
+kendoTextBox
+kendoUpload
+
+$("#").kendoDatePicker({
+                max: ,
+        value:  "@Model.S_Dob".split(" ")[0]
+
+            })
+
+$("").kendoRadioGroup({
+    items:[{label:"",value:""},
+    {label:"",value:""},
+    {label:"",value:""}],
+    layout:"horizontal"
+});
+
+$("").kendoDropDownList({
+    optionLabel:"",
+    dataSource:Object.keys(),
+    change:function(){
+        var state=this.value();
+        CityInfo.dataSource.data(citydata[state] || []);
+    }
+})
+
+ $("").kendoMultiSelect({
+                placeholder: "Select Hobbies",
+                dataSource: ["", "", "", "", " "],
+        value: "@Model.S_Hobbies".split(",")
+
+            })
+            var formData = new FormData($("#")[0]);
+            var hob = $("#").data("kendoMultiSelect").value();
+            formData.delete("");
+            formData.append("", hob.join(","));
+
+
+
+
+        $("").kendoDropDownList({
+            optionLabel: "Select Flight",
+            dataSource: {
+                transport:{
+                    read:{
+                        url:""
+                    }
+                }
+            },
+            
+            dataTextField:"",
+            dataValueField:"",
+            change:function(){
+                var id=this.value();
+                $.ajax({
+                    url:,
+                    success:function(res){
+                        $("").val();
+                        $("").val();
+                    }
+                })
+            }
+
+        });
+
+
+@Model.S_Dob.ToString("yyy-MM-dd")
+
+ template: "#= kendo.toString(new Date(s_Date), 'yyyy-MM-dd')#" }
+ template: "<img src='/images/#=s_Image#' width='120' height='100' />"
+ template:<button class='btn btn-sm btn-info' onclick='editBooking(#=s_Fid#)'>Edit</button>
+
+
+ $("#").kendoNumericTextBox({
+            min: 1,
+            format: "n0",
+            change:function(){
+                var seat=this.value();
+                var p=$("").val();
+                $("").val();
+            }
+        });
